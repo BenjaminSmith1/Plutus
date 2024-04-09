@@ -2,7 +2,7 @@ import cython
 
 
 cdef class FinanceCore(object):
-    cdef float tax_free_allowance, lower_tax_bracket, middle_tax_bracket, upper_tax_bracket
+    cdef float tax_free_allowance, lower_tax_bracket, middle_tax_bracket, upper_tax_bracket,
 
     def __init__(self) -> None:
         self.tax_free_allowance = 1048
@@ -51,4 +51,21 @@ cdef class FinanceCore(object):
         elif monthly_income >= self.middle_tax_bracket:
             new_allowance = self.tax_free_allowance - (((monthly_income * 12) - (self.middle_tax_bracket*12)) *0.5)
         return new_allowance
+
+    cdef calculate_national_insurance(self, monthly_income: float):
+        """
+        Calculates national insurance from monthly income
+        :param monthly_income: float, the monthly income
+        :return: the national insurance to be deducted from the monthly income
+        """
+        cdef float ni = 0.0
+        if monthly_income <= self.tax_free_allowance:
+            return ni
+        elif monthly_income <= self.middle_tax_bracket:
+            ni += (monthly_income - self.tax_free_allowance) * 0.08
+        else:
+            ni += (monthly_income - self.tax_free_allowance) * 0.08
+            ni += (monthly_income - self.middle_tax_bracket) * 0.02
+        return ni
+
 
