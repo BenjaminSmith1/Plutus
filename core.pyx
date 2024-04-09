@@ -25,6 +25,7 @@ cdef class FinanceCore(object):
         :param monthly_income: float, the monthly income
         :return: The tax to be deducted from the monthly income
         """
+        # TODO: Implement pension contribution reduction
         cdef float tax = 0.0
         if monthly_income <= self.tax_free_allowance:
             return tax
@@ -67,5 +68,15 @@ cdef class FinanceCore(object):
             ni += (monthly_income - self.tax_free_allowance) * 0.08
             ni += (monthly_income - self.middle_tax_bracket) * 0.02
         return ni
+
+    cdef calculate_pension(self, monthly_income: float, employee_contribution: float, employer_contribution:float):
+        """
+        Calculates the pension to be deducted from the monthly income
+        :param monthly_income: float, the monthly income
+        :param employee_contribution: float, the employee contribution to the pension
+        :param employer_contribution: float, the employer contribution to the pension
+        :return: the pension to be deducted from the monthly income
+        """
+        return monthly_income * (employee_contribution + employer_contribution)
 
 
