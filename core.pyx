@@ -75,8 +75,8 @@ cdef class FinanceCore(object):
         :param monthly_income: float, the monthly income
         :param employee_contribution: float, the employee contribution to the pension
         :param employer_contribution: float, the employer contribution to the pension
-        :return: the pension to be deducted from the monthly income
+        :return: tuple containing employee contribution and employer contribution (in that order) the pension to be deducted from the monthly income
         """
-        return monthly_income * (employee_contribution + employer_contribution)
+        return (monthly_income * employee_contribution), (monthly_income * employer_contribution)
 
 
